@@ -11,16 +11,16 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>数据外发工具</string>
+   <string>Excel数据处理工具</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QPushButton" name="btn_open">
     <property name="geometry">
      <rect>
-      <x>400</x>
-      <y>90</y>
+      <x>460</x>
+      <y>100</y>
       <width>101</width>
-      <height>41</height>
+      <height>31</height>
      </rect>
     </property>
     <property name="text">
@@ -50,7 +50,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>选择接口</string>
+     <string>选择配置</string>
     </property>
    </widget>
    <widget class="QComboBox" name="cb_config">
@@ -97,8 +97,8 @@
      <rect>
       <x>120</x>
       <y>100</y>
-      <width>231</width>
-      <height>22</height>
+      <width>321</width>
+      <height>31</height>
      </rect>
     </property>
    </widget>
@@ -109,9 +109,9 @@
     <property name="geometry">
      <rect>
       <x>120</x>
-      <y>180</y>
+      <y>172</y>
       <width>471</width>
-      <height>23</height>
+      <height>31</height>
      </rect>
     </property>
     <property name="value">

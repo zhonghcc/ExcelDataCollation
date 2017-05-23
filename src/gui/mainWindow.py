@@ -4,15 +4,11 @@ Created on 2015年12月25日
 
 @author: zhonghcc
 '''
+import dataCollator
 from PyQt4 import QtGui,uic,QtCore
 import logging
-import tkFileDialog
-import urllib
-import urllib2
-import time
 import chardet
 from PyQt4.QtGui import QMessageBox,QFileDialog
-#from PyQt4.QtCore import
 READY,SENDING,SENDIING_COMPLETED = range(3) #state enum
 class MainWindow(QtGui.QMainWindow):
     '''
@@ -25,11 +21,15 @@ class MainWindow(QtGui.QMainWindow):
         '''
         self.logger = logging.getLogger("DataCollation.MainWindow")
         super(MainWindow, self).__init__()
-        self.ui = uic.loadUi("gui/mainwindow.ui", self)
+        self.ui = uic.loadUi("resources/mainwindow.ui", self)
 
         self.progressBar.setMinimum(1)
         self.progressBar.setMaximum(100)
-        
+
+        self.dataCollator = dataCollator.DataCollator()
+        arr = self.dataCollator.getConfigList();
+        for config in arr:
+            self.ui.cb_config.addItem(unicode(config.decode("GBK")))
         self.show()
         
     def start(self):
