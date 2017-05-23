@@ -8,7 +8,10 @@ class DataCollator():
     def __init__(self):
         self.logger = logging.getLogger("DataCollation.DataCollator")
 
-    def process(self,path,config,callback):
+    def process(self,path,config,callback,complete):
+        print path
+        print config
+
         pass
 
     def getConfigList(self):

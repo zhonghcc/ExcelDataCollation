@@ -27,6 +27,7 @@ class MainWindow(QtGui.QMainWindow):
         self.progressBar.setMaximum(100)
 
         self.dataCollator = dataCollator.DataCollator()
+        self.state = READY
         arr = self.dataCollator.getConfigList();
         for config in arr:
             self.ui.cb_config.addItem(unicode(config.decode("GBK")))
@@ -42,7 +43,7 @@ class MainWindow(QtGui.QMainWindow):
         
     def openFileChoseDialog(self):
         self.logger.debug('opening FileChoseDialog')
-        filename=QFileDialog.getOpenFileName(self,"Open file dialog","/","Excel file(*.xls|*.xlxs)")
+        filename=QFileDialog.getOpenFileName(self,"Open file dialog","/","Excel file(*.xls *.xlsx)")
         if filename == '': return
         self.fileName.setText(filename) 
         
@@ -57,27 +58,35 @@ class MainWindow(QtGui.QMainWindow):
             self.progressBar.setValue(status)
             
     def processData(self):
-        if not (self.state == LOADING_COMPLETED or self.state == SENDING):
-            message = u'当前没有要发送的数据，请选择要处理的文件并点击\'数据准备\'按钮'
-            self.showMessage(message)
-            return
-        
+
+        fileName = self.ui.fileName.text()
+        config = self.ui.cb_config.currentText()
+
+        print fileName
+        print config
+
         if self.state == SENDING:
             message = u'您确认要取消吗？'
             if self.confirmMessage(message):
                 self.sender.stopWork()
-                self.state=LOADING_COMPLETED
+                self.state=SENDIING_COMPLETED
             return
-        
-        
+
+        if fileName == "" or config == "":
+            message = u'未选择配置或待处理文件，请检查'
+            self.showMessage(message)
+            return
+
         self.state = SENDING
-        self.sender.sendData(self.spb_inteval.value(), self.displayProcess , self.sendComplete)
+
             
             
     
     
     def sendComplete(self):
         self.state = SENDIING_COMPLETED
+
+
    
     def showMessage(self,message):
         msgBox = QMessageBox.information(None,u'提示',message)
