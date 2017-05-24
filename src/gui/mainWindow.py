@@ -62,9 +62,6 @@ class MainWindow(QtGui.QMainWindow):
         fileName = unicode(self.ui.fileName.text())
         config = unicode(self.ui.cb_config.currentText())
 
-        print fileName
-        print config
-
         if self.state == SENDING:
             message = u'您确认要取消吗？'
             if self.confirmMessage(message):
