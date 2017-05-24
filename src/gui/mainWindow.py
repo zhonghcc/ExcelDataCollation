@@ -59,8 +59,8 @@ class MainWindow(QtGui.QMainWindow):
             
     def processData(self):
 
-        fileName = self.ui.fileName.text()
-        config = self.ui.cb_config.currentText()
+        fileName = unicode(self.ui.fileName.text())
+        config = unicode(self.ui.cb_config.currentText())
 
         print fileName
         print config
@@ -68,7 +68,7 @@ class MainWindow(QtGui.QMainWindow):
         if self.state == SENDING:
             message = u'您确认要取消吗？'
             if self.confirmMessage(message):
-                self.sender.stopWork()
+                self.dataCollator.stop()
                 self.state=SENDIING_COMPLETED
             return
 
@@ -78,7 +78,7 @@ class MainWindow(QtGui.QMainWindow):
             return
 
         self.state = SENDING
-
+        self.dataCollator.process(fileName,config,self.displayProcess,self.sendComplete)
             
             
     

@@ -2,7 +2,6 @@
 import sys
 import io
 import os
-import xlwt
 import traceback
 import logging
 import logging.config

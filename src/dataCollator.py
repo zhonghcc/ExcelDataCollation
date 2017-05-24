@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
 import os
+import xlrd
+import xlwt
 import logging
 BASE_PATH = "config/"
 class DataCollator():
@@ -9,9 +11,17 @@ class DataCollator():
         self.logger = logging.getLogger("DataCollation.DataCollator")
 
     def process(self,path,config,callback,complete):
-        print path
-        print config
+        logging.info("path="+path)
+        logging.info("config="+config)
 
+        data = xlrd.open_workbook(path)
+        table = data.sheets()[0] # TODO to process only the first sheet
+        nrows = table.nrows
+        for i in range(nrows ):
+            print table.row_values(i)
+        pass
+
+    def stop(self):
         pass
 
     def getConfigList(self):
