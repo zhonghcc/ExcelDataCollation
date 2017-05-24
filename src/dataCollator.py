@@ -18,7 +18,7 @@ class DataCollator():
         table = data.sheets()[0] # TODO to process only the first sheet
         nrows = table.nrows
         for i in range(nrows ):
-            print table.row_values(i)
+            print table.row_values(i)[0]
         pass
 
     def stop(self):
