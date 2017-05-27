@@ -4,7 +4,7 @@
   "filters":[
     { "name":"repeat", "source":"A" },
     { "name":"id0000", "source":"B" },
-    { "name":"idInvalid", "source":"B" },
+    { "name":"idInvalid", "source":"B" }
 
   ]
 }

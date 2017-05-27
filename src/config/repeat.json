@@ -1,0 +1,7 @@
+{
+  "name":"repeat",
+  "output":"B",
+  "filters":[
+    { "name":"repeat", "source":"A" }
+  ]
+}

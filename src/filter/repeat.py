@@ -19,9 +19,15 @@ class Repeat(baseFilter.BaseFilter):
         data = args[0]
         if data in self.set:
             return data+"repeat"
-        else
+        else:
             self.set.add(data)
             return ""
 
 
 
+if __name__ == '__main__':
+    repeat = Repeat()
+    repeat.getReady()
+    print(repeat.process("13800138000"))
+    print(repeat.process("13800138000"))
+    print(repeat.process("13800138001"))
