@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 
 import baseFilter
+from filter import dataFilter
 
+@dataFilter("repeat")
 class Repeat(baseFilter.BaseFilter):
 
     def __init__(self):
@@ -17,6 +19,7 @@ class Repeat(baseFilter.BaseFilter):
             return "need 1 arg"
 
         data = args[0]
+        data = str(data) #only to judge as text
         if data in self.set:
             return data+"repeat"
         else:

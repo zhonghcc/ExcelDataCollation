@@ -3,8 +3,11 @@
 import os
 import xlrd
 import xlwt
+import xlutils.copy
 import logging
+import logging.config
 import json
+from filter import filtersClass
 import filter.repeat
 
 BASE_PATH = "config/"
@@ -22,20 +25,46 @@ class DataCollator():
         self.resultColumn = self.convertLetterToNum(configObj["output"])
         self.filterName = configObj["name"]
         self.filters = []
+
+        class FilterObj(): #inner cls
+            def __init__(self):
+                pass
         for filterObj in configObj["filters"]:
-            filter = object()
+            filter = FilterObj()
             filter.source = self.convertLetterToNum(filterObj["source"])
             filter.name = filterObj["name"]
-            filter.processor = filter.repeat.Repeat()
-
+            filter.processor = filtersClass[filter.name]() #instance
+            strTarget = None
+            if filterObj.has_key("target"):
+                strTarget = filterObj["target"]
+            filter.target = []
+            if strTarget is not None:
+                arrTarget = strTarget.split(',')
+                for tar in arrTarget:
+                    targetNum = self.convertLetterToNum(tar)
+                    filter.target.append(targetNum)
+            self.filters.append(filter)
 
         ### read and deal with xls
-        data = xlrd.open_workbook(path)
-        table = data.sheets()[0] # TODO to process only the first sheet
-        nrows = table.nrows
+        (filepath,tempfilename) = os.path.split(path)
+        (shortname,ext) = os.path.splitext(tempfilename)
+        outputPath = filepath+shortname+"_result."+ext
+        indata = xlrd.open_workbook(path)
+        w = xlutils.copy.copy(indata)
+        ws = w.get_sheet(0)
+        intable = indata.sheets()[0] # TODO to process only the first sheet
+        nrows = intable.nrows
         for i in range(nrows ):
-            print table.row_values(i)[0]
+            for filter in self.filters:
+                preData = intable.row_values(i)[filter.source]
+                result = filter.processor.process(preData)
+                self.logger.info(result)
+                if result is []:
+                    if len(result) != (len(filter.target)+1):
+                        self.logger.error("result length="+str(len(result)) + "and filter target="+str(filter.target))
+                # ws.write(i,)
         pass
+
 
     def stop(self):
         pass
@@ -74,7 +103,7 @@ class DataCollator():
                 return "Error:"+str
             total = total*26
             total = total + ord(ch)-ordA +1
-        print total
+        return total-1 # start with 0 not 1
 
 def mainComplete():
     print "Complete"
@@ -83,8 +112,9 @@ def mainCallback(index,length):
     print index,length
 
 if __name__ == '__main__':
+    logging.config.fileConfig('logging.conf')
     collator = DataCollator()
-    collator.convertLetterToNum('A')
-    collator.convertLetterToNum('B')
-    collator.convertLetterToNum('DF')
+    # collator.convertLetterToNum('A')
+    # collator.convertLetterToNum('B')
+    # collator.convertLetterToNum('DF')
     collator.process("../example/1.xlsx","repeat",mainCallback,mainComplete)
