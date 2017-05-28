@@ -16,10 +16,7 @@ class DataCollator():
     def __init__(self):
         self.logger = logging.getLogger("DataCollation.DataCollator")
 
-    def process(self,path,config,callback,complete):
-        self.logger.info("path="+path)
-        self.logger.info("config="+config)
-
+    def initFilters(self,config):
         ### read config file and init filters
         configObj = self.getConfigContent(config)
         self.resultColumn = self.convertLetterToNum(configObj["output"])
@@ -45,16 +42,23 @@ class DataCollator():
                     filter.target.append(targetNum)
             self.filters.append(filter)
 
+
+    def process(self,path,config,callback,complete):
+        self.logger.info("path="+path)
+        self.logger.info("config="+config)
+
+        self.initFilters(config)
         ### read and deal with xls
         (filepath,tempfilename) = os.path.split(path)
         (shortname,ext) = os.path.splitext(tempfilename)
-        outputPath = filepath+shortname+"_result."+ext
+        outputPath = filepath+shortname+"_result"+ext
         indata = xlrd.open_workbook(path)
         w = xlutils.copy.copy(indata)
         ws = w.get_sheet(0)
         intable = indata.sheets()[0] # TODO to process only the first sheet
         nrows = intable.nrows
         for i in range(nrows ):
+            results = []
             for filter in self.filters:
                 preData = intable.row_values(i)[filter.source]
                 result = filter.processor.process(preData)
@@ -62,7 +66,20 @@ class DataCollator():
                 if result is []:
                     if len(result) != (len(filter.target)+1):
                         self.logger.error("result length="+str(len(result)) + "and filter target="+str(filter.target))
-                # ws.write(i,)
+                    else:
+                        for index in range(len(filter.target)):
+                            ws.write(i,self.tar[index],result[index])
+
+                else: #result not array
+                    results.append(result)
+            strResult = ""
+            for result in results:
+                strResult = strResult + result + "|"
+            ws.write(i,self.resultColumn,strResult)
+            callback(i,nrows)
+        print outputPath
+        w.save(outputPath)
+        complete()
         pass
 
 
