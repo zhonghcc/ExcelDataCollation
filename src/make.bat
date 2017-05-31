@@ -8,8 +8,8 @@ rd /s /q %base%\build
 pause
 pyinstaller -w app.py 
 xcopy %base%\resources %base%\dist\app\resources /i /e
+xcopy %base%\config %base%\dist\app\config /i /e
 copy logging.conf %base%\dist\app\logging.conf
-copy data.db %base%\dist\app\data.db
 echo "starting to compress"
 7za a app.zip .\dist\*
 pause
