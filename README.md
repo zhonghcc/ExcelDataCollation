@@ -25,6 +25,7 @@ app.py is a gui interface entrance.
 - mobileLocation
    - 要求字段：文本，手机号
    - 输出：3
+   - 使用api：http://cx.shouji.360.cn/phonearea.php?number=15388888888
 - repeat
    - 要求字段：文本，任意
    - 输出：1

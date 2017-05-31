@@ -1,7 +1,7 @@
 {
   "name":"mobileLocate",
-  "output":"D",
+  "output":"E",
   "filters":[
-    { "name":"mobileLocate", "source":"A","target":"B,C" }
+    { "name":"mobileLocate", "source":"A","target":"B,C,D" }
   ]
 }

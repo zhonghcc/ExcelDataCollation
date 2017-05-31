@@ -31,16 +31,17 @@ class MobileLocate(baseFilter.BaseFilter):
 
     def locate(self,mobile):
 
-        url = "https://tcc.taobao.com/cc/json/mobile_tel_segment.htm?tel="+mobile
+        url = "http://cx.shouji.360.cn/phonearea.php?number="+mobile
         req = urllib2.Request(url=url)
         res_data = urllib2.urlopen(req)
         res = res_data.read()
-        res = unicode(res,"gbk").replace("__GetZoneResult_ =","")
-        arr = res.split("'")
-        #result = json.loads(res)
-        self.logger.info(mobile)
-        self.logger.info(arr[3]+arr[5])
-        return [arr[3],arr[5],""]
+        print res
+        result = json.loads(res)
+        provice = result["data"]["province"]
+        city = result["data"]["city"]
+        sp = result["data"]["sp"]
+        self.logger.info(provice+city+sp)
+        return [provice,city,sp,""]
     
 
 if __name__ == '__main__':
