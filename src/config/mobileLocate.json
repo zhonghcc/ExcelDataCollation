@@ -1,0 +1,7 @@
+{
+  "name":"mobileLocate",
+  "output":"D",
+  "filters":[
+    { "name":"mobileLocate", "source":"A","target":"B,C" }
+  ]
+}
