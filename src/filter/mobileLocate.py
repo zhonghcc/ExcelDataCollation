@@ -6,12 +6,14 @@ import datetime
 import urllib2
 import json
 from filter import dataFilter
+import logging
 
 
 @dataFilter("mobileLocate")
 class MobileLocate(baseFilter.BaseFilter):
 
     def __init__(self):
+        self.logger = logging.getLogger("DataCollation.filter.mobileLocate")
         pass
 
     def getReady(self):
@@ -36,6 +38,8 @@ class MobileLocate(baseFilter.BaseFilter):
         res = unicode(res,"gbk").replace("__GetZoneResult_ =","")
         arr = res.split("'")
         #result = json.loads(res)
+        self.logger.info(mobile)
+        self.logger.info(arr[3]+arr[5])
         return [arr[3],arr[5],""]
     
 

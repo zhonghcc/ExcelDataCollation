@@ -61,6 +61,8 @@ class DataCollator():
         intable = indata.sheets()[0] # TODO to process only the first sheet
         nrows = intable.nrows
         for i in range(nrows ):
+            if i==0:
+                continue # skip the table head
             results = []
             for filter in self.filters:
                 preData = intable.row_values(i)[filter.source]
