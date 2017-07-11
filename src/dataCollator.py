@@ -7,6 +7,7 @@ import xlutils.copy
 import logging
 import logging.config
 import json
+import threading
 from filter import filtersClass
 from filter import repeat,idcard,mobileLocate
 
@@ -47,6 +48,11 @@ class DataCollator():
 
 
     def process(self,path,config,callback,complete):
+        self.tread = threading.Thread(target=self.subProcess,args=(path,config,callback,complete))
+        self.tread.setDaemon(True)
+        self.tread.start()
+
+    def subProcess(self,path,config,callback,complete):
         self.logger.info("path="+path)
         self.logger.info("config="+config)
 
